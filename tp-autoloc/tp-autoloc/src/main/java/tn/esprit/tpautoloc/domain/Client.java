@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "client")
@@ -35,6 +37,8 @@ public class Client {
     private String numPermis;
 
     private LocalDate dateInscription;
+    @OneToMany(mappedBy = "client")
+    private Set<Reservation> reservations = new HashSet<>();
 
 }
 

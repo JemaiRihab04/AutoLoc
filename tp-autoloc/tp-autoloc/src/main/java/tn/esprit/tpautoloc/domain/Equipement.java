@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,4 +26,7 @@ public class Equipement {
     private Long id;
 
     private String libelle;
+
+    @ManyToMany(mappedBy = "equipements")
+    private Set<Vehicule> vehicules = new HashSet<>();
 }

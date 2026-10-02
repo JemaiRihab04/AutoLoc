@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.*;
 
 @Entity
 @Table(name = "agence")
@@ -27,6 +28,11 @@ public class Agence {
     private String adresse;
 
     private String telephone;
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    private Set<Employe> employes = new HashSet<>();
+
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    private Set<Vehicule> vehicules = new HashSet<>();
 
 }
 

@@ -19,7 +19,7 @@ public class Maintenance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idMaintenance;
 
     private LocalDate dateDebut;
 

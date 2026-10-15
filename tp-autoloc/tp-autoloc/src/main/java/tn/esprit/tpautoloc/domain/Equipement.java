@@ -23,10 +23,10 @@ public class Equipement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEquipement;
 
     private String libelle;
 
-    @ManyToMany(mappedBy = "equipements")
+    @ManyToMany(mappedBy = "equipements", cascade = CascadeType.ALL)
     private Set<Vehicule> vehicules = new HashSet<>();
 }

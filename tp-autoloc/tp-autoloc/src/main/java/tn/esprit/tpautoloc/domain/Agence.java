@@ -19,7 +19,7 @@ public class Agence {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idAgence;
 
     private String nom;
 

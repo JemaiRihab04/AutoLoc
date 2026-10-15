@@ -19,7 +19,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idReservation;
 
     private LocalDate dateDebut;
 
@@ -31,7 +31,7 @@ public class Reservation {
     private Vehicule vehicule;
     @ManyToOne
     private Client client;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Contrat contrat;
 
 }

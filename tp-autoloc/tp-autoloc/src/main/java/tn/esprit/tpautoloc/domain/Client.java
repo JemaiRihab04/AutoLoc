@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import jakarta.persistence.*;
+
 import java.util.*;
 
 @Entity

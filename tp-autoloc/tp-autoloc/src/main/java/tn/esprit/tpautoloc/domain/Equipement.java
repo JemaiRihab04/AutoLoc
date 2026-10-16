@@ -1,15 +1,14 @@
 package tn.esprit.tpautoloc.domain;
 
 import jakarta.persistence.*;
-import tn.esprit.tpautoloc.domain.enums.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "equipement")

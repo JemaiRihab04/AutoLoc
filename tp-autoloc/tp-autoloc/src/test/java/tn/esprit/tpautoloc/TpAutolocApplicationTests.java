@@ -25,7 +25,9 @@ import tn.esprit.tpautoloc.domain.enums.RoleEmploye;
 import tn.esprit.tpautoloc.repository.IEquipementRepository;
 import tn.esprit.tpautoloc.repository.IEmployeRepository;
 import tn.esprit.tpautoloc.repository.IMaintenanceRepository;
-import java.time.LocalDate;
+import tn.esprit.tpautoloc.service.IAgenceService;
+import tn.esprit.tpautoloc.service.IClientService;
+import tn.esprit.tpautoloc.service.IVehiculeService;
 
 
 @SpringBootTest
@@ -45,6 +47,13 @@ class TpAutolocApplicationTests {
 
     @Autowired
     private IMaintenanceRepository maintenanceRepository;
+
+    @Autowired
+    private IAgenceService agenceService;
+    @Autowired
+    private IClientService clientService;
+    @Autowired
+    private IVehiculeService vehiculeService;
 
     @Test
     void contextLoads() {
@@ -95,11 +104,11 @@ soit la boîte est vide.*/
         assertEquals(nombreAvant + 1, agenceRepository.count());
         // deleteById
 
-        /*agenceRepository.deleteById(saved.getIdAgence());
+        agenceRepository.deleteById(saved.getIdAgence());
         System.out.println("Existe encore ? " + agenceRepository.existsById(saved.getIdAgence()));
         assertFalse(agenceRepository.existsById(saved.getIdAgence()));
         assertTrue(agenceRepository.findById(saved.getIdAgence()).isEmpty());
-        assertEquals(nombreAvant, agenceRepository.count()); */
+        assertEquals(nombreAvant, agenceRepository.count());
     }
 
     @Test
@@ -345,4 +354,163 @@ soit la boîte est vide.*/
         assertFalse(employeRepository.existsById(saved.getIdEmploye()));
         assertEquals(nombreAvant, employeRepository.count());
     }
+
+
+
+    @Test
+    void testAgenceService() {
+        int nombreAvant = agenceService.findAll().size();
+
+        Agence agence = new Agence();
+        agence.setNom("Agence Service");
+        agence.setAdresse("Avenue Habib Bourguiba");
+        agence.setVille("Tunis");
+        agence.setTelephone("71123456");
+
+
+        Agence saved = agenceService.create(agence);
+        System.out.println("Agence enregistrée : " + saved.getIdAgence() + " - " + saved.getNom());
+        assertNotNull(saved.getIdAgence());
+        assertEquals("Agence Service", saved.getNom());
+
+
+        List<Agence> agences = agenceService.findAll();
+        System.out.println("Liste des agences :");
+        agences.forEach(a -> System.out.println(a.getIdAgence() + " - " + a.getNom()));
+        assertFalse(agences.isEmpty());
+
+
+        Agence trouvee = agenceService.findById(saved.getIdAgence());
+        System.out.println("Agence trouvée : " + trouvee.getNom());
+        assertEquals(saved.getIdAgence(), trouvee.getIdAgence());
+
+
+        System.out.println("Nombre d'agences : " + agenceService.findAll().size());
+        assertEquals(nombreAvant + 1, agenceService.findAll().size());
+
+
+        Agence modif = new Agence();
+        modif.setNom("Agence Service Modifiée");
+        modif.setAdresse("Avenue Habib Bourguiba");
+        modif.setVille("Tunis");
+        modif.setTelephone("71123456");
+        Agence maj = agenceService.update(saved.getIdAgence(), modif);
+        assertEquals("Agence Service Modifiée", maj.getNom());
+
+        // deleteById puis vérification
+
+        agenceService.deleteById(saved.getIdAgence());
+
+        assertEquals(nombreAvant, agenceService.findAll().size());
+        System.out.println("Agence supprimée, nombre d'agences : " + agenceService.findAll().size());
+    }
+
+    @Test
+    void testClientService() {
+        int nombreAvant = clientService.findAll().size();
+
+
+        Client c1 = new Client();
+        c1.setNom("Ben Ali");
+        c1.setPrenom("Ahmed");
+        c1.setEmail("ahmed.service@gmail.com");
+        c1.setTelephone("20123456");
+        c1.setNumPermis("P11111");
+        c1.setDateInscription(LocalDate.now());
+
+        Client c2 = new Client();
+        c2.setNom("Trabelsi");
+        c2.setPrenom("Sara");
+        c2.setEmail("sara.service@gmail.com");
+        c2.setTelephone("98765432");
+        c2.setNumPermis("P22222");
+        c2.setDateInscription(LocalDate.now());
+
+        Client s1 = clientService.create(c1);
+        Client s2 = clientService.create(c2);
+        System.out.println("Client 1 enregistré : " + s1.getIdClient() + " " + s1.getNom());
+        System.out.println("Client 2 enregistré : " + s2.getIdClient() + " " + s2.getNom());
+        assertNotNull(s1.getIdClient());
+        assertNotNull(s2.getIdClient());
+        assertNotEquals(s1.getIdClient(), s2.getIdClient());
+
+
+        List<Client> clients = clientService.findAll();
+        System.out.println("Liste des clients :");
+        clients.forEach(c -> System.out.println(c.getIdClient() + " - " + c.getNom() + " " + c.getPrenom()));
+
+
+
+        Client trouve = clientService.findById(s1.getIdClient());
+        System.out.println("Client trouvé : " + trouve.getNom() + " " + trouve.getPrenom());
+        assertEquals("Ahmed", trouve.getPrenom());
+
+
+        System.out.println("Nombre de clients : " + clientService.findAll().size());
+        assertEquals(nombreAvant + 2, clientService.findAll().size());
+
+
+        clientService.deleteById(s1.getIdClient());
+        clientService.deleteById(s2.getIdClient());
+        System.out.println("Clients supprimés, nombre de clients : " + clientService.findAll().size());
+        assertEquals(nombreAvant, clientService.findAll().size());
+
+
+    }
+
+
+    @Test
+    void testVehiculeService() {
+        int nombreAvant = vehiculeService.findAll().size();
+
+
+        Vehicule v = new Vehicule();
+        v.setImmatriculation("201 TUN 5678");
+        v.setMarque("Renault");
+        v.setModele("Clio");
+        v.setCategorie(CategorieVehicule.CITADINE);
+        v.setTarifJournalier(new BigDecimal("110.00"));
+        v.setStatut(StatutVehicule.DISPONIBLE);
+
+        Vehicule saved = vehiculeService.create(v);
+        System.out.println("Véhicule enregistré : " + saved.getIdVehicule() + " "
+                + saved.getMarque() + " " + saved.getModele());
+        assertNotNull(saved.getIdVehicule());
+        assertEquals("Renault", saved.getMarque());
+
+
+        List<Vehicule> vehicules = vehiculeService.findAll();
+        System.out.println("Liste des véhicules :");
+        vehicules.forEach(x -> System.out.println(x.getIdVehicule() + " - " + x.getMarque()
+                + " " + x.getModele() + " - " + x.getCategorie() + " - " + x.getStatut()
+                + " - " + x.getTarifJournalier() + " DT"));
+        assertFalse(vehicules.isEmpty());
+
+
+        Vehicule trouve = vehiculeService.findById(saved.getIdVehicule());
+        System.out.println("Véhicule trouvé : " + trouve.getMarque() + " " + trouve.getModele());
+        assertEquals(saved.getIdVehicule(), trouve.getIdVehicule());
+
+
+        System.out.println("Nombre de véhicules : " + vehiculeService.findAll().size());
+        assertEquals(nombreAvant + 1, vehiculeService.findAll().size());
+
+        // règle métier : tarif négatif refusé
+        Vehicule invalide = new Vehicule();
+        invalide.setMarque("Test");
+        invalide.setTarifJournalier(new BigDecimal("-5"));
+        assertThrows(IllegalArgumentException.class, () -> vehiculeService.create(invalide));
+
+        // deleteById puis vérification
+        vehiculeService.deleteById(saved.getIdVehicule());
+
+        System.out.println("Véhicule supprimé, nombre de véhicules : " + vehiculeService.findAll().size());
+        assertEquals(nombreAvant, vehiculeService.findAll().size());
+    }
+
+
+
+
+
+
 }

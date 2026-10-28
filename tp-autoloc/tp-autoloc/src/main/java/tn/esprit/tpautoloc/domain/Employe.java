@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.tpautoloc.domain.enums.RoleEmploye;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "employe")
@@ -26,5 +27,9 @@ public class Employe {
     @Enumerated(EnumType.STRING)
     private RoleEmploye role;
     @ManyToOne
+
+    //@JsonBackReference("agence-employes")
+
+
     private Agence agence;
 }

@@ -40,10 +40,17 @@ public class ContratServiceImpl implements IContratService {
     public Contrat update(Long id, Contrat contrat) {
         verifierRegles(contrat);
         Contrat existant = findById(id);
-        existant.setDateSignature(contrat.getDateSignature());
-        existant.setMontantTotal(contrat.getMontantTotal());
-        existant.setValide(contrat.isValide());
-        // idContrat, reservation et paiements ne sont pas touchés
+
+        if (contrat.getDateSignature() != null) {
+            existant.setDateSignature(contrat.getDateSignature());
+        }
+        if (contrat.getMontantTotal() != null) {
+            existant.setMontantTotal(contrat.getMontantTotal());
+        }
+        if (contrat.getValide() != null) {
+            existant.setValide(contrat.getValide());
+        }
+
         return contratRepository.save(existant);
     }
 

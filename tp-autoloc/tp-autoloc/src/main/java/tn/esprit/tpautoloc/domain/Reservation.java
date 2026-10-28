@@ -1,5 +1,7 @@
 package tn.esprit.tpautoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import tn.esprit.tpautoloc.domain.enums.*;
 import lombok.AllArgsConstructor;
@@ -28,8 +30,10 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private StatutReservation statut;
     @ManyToOne
+    //@JsonBackReference("vehicule-reservation")
     private Vehicule vehicule;
     @ManyToOne
+    //@JsonBackReference ("Client-reservations")
     private Client client;
     @OneToOne
     private Contrat contrat;

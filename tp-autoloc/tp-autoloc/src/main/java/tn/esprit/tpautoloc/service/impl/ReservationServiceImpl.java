@@ -50,10 +50,16 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public void deleteById(Long id) {
-        if (!reservationRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Reservation", id);
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reservation", id));
+
+        // Libérer la relation avec le contrat
+        if (reservation.getContrat() != null) {
+            reservation.getContrat().setReservation(null);
+            reservation.setContrat(null);
         }
-        reservationRepository.deleteById(id);
+
+        reservationRepository.delete(reservation);
     }
 
     private void verifierRegles(Reservation reservation) {

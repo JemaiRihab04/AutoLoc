@@ -8,10 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
+
 
 @Entity
 @Table(name = "client")
@@ -38,6 +40,8 @@ public class Client {
 
     private LocalDate dateInscription;
     @OneToMany(mappedBy = "client")
+    //@JsonManagedReference("Client-reservations")
+    @JsonIgnore
     private Set<Reservation> reservations = new HashSet<>();
 
 }

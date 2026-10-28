@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "contrat")
@@ -27,10 +30,12 @@ public class Contrat {
 
     private BigDecimal montantTotal;
 
-    private boolean valide = false;
+    private Boolean valide = false;
     @OneToOne(mappedBy = "contrat")
+    @JsonIgnore
     private Reservation reservation;
 
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("contrat-paiements")
     private Set<Paiement> paiements = new HashSet<>();
 }

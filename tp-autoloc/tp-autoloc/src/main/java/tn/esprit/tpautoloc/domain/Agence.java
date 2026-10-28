@@ -6,8 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.*;
 
+import java.util.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "agence")
 @Getter
@@ -29,10 +33,15 @@ public class Agence {
 
     private String telephone;
     @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    //@JsonManagedReference("agence-employes")
+    @JsonIgnore
     private Set<Employe> employes = new HashSet<>();
 
     @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    //@JsonManagedReference("agence-vehichules")
+    @JsonIgnore
     private Set<Vehicule> vehicules = new HashSet<>();
+
 
 }
 

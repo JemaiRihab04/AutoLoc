@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Table(name = "reservation")
@@ -17,6 +19,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Builder
+
 public class Reservation {
 
     @Id

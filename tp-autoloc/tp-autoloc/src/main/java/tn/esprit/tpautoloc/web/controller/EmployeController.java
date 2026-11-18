@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.tpautoloc.domain.Employe;
 import tn.esprit.tpautoloc.service.IEmployeService;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -72,5 +73,17 @@ public class EmployeController {
     public void deleteById(
             @Parameter(description = "Identifiant de l'employé") @PathVariable Long id) {
         employeService.deleteById(id);
+    }
+    @PutMapping("/{employeId}/agence/{agenceId}")
+    public ResponseEntity<String> affecterAgence(@PathVariable Long employeId,
+                                                 @PathVariable Long agenceId) {
+        employeService.affecterEmployeAAgence(employeId, agenceId);
+        return ResponseEntity.ok("Employé " + employeId + " affecté à l'agence " + agenceId);
+    }
+
+    @PutMapping("/{employeId}/desaffecter-agence")
+    public ResponseEntity<String> desaffecterAgence(@PathVariable Long employeId) {
+        employeService.desaffecterEmployeDeAgence(employeId);
+        return ResponseEntity.ok("Employé " + employeId + " désaffecté de son agence");
     }
 }

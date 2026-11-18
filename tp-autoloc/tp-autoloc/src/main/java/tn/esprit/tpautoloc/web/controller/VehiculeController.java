@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.tpautoloc.domain.Vehicule;
 import tn.esprit.tpautoloc.service.IVehiculeService;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -68,5 +69,17 @@ public class VehiculeController {
             @Parameter(description = "Identifiant du véhicule")
             @PathVariable Long id) {
         vehiculeService.deleteById(id);
+    }
+    @PutMapping("/{vehiculeId}/agence/{agenceId}")
+    public ResponseEntity<String> affecterAgence(@PathVariable Long vehiculeId,
+                                                 @PathVariable Long agenceId) {
+        vehiculeService.affecterVehiculeAAgence(vehiculeId, agenceId);
+        return ResponseEntity.ok("Véhicule " + vehiculeId + " affecté à l'agence " + agenceId);
+    }
+
+    @PutMapping("/{vehiculeId}/desaffecter-agence")
+    public ResponseEntity<String> desaffecterAgence(@PathVariable Long vehiculeId) {
+        vehiculeService.desaffecterVehiculeDeAgence(vehiculeId);
+        return ResponseEntity.ok("Véhicule " + vehiculeId + " désaffecté de son agence");
     }
 }

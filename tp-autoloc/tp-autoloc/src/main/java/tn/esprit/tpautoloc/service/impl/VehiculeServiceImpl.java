@@ -5,15 +5,21 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.tpautoloc.domain.Vehicule;
+import tn.esprit.tpautoloc.domain.Agence;
+
 import tn.esprit.tpautoloc.exception.ResourceNotFoundException;
 import tn.esprit.tpautoloc.repository.IVehiculeRepository;
 import tn.esprit.tpautoloc.service.IVehiculeService;
+import tn.esprit.tpautoloc.repository.IAgenceRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class VehiculeServiceImpl implements IVehiculeService {
 
     private final IVehiculeRepository vehiculeRepository;
+    private final IAgenceRepository agenceRepository;
+
 
     @Override
     public Vehicule create(Vehicule vehicule) {
@@ -66,4 +72,31 @@ public class VehiculeServiceImpl implements IVehiculeService {
                     "Le tarif journalier ne peut pas être négatif");
         }
     }
+    @Override
+    @Transactional
+    public void affecterVehiculeAAgence(Long vehiculeId, Long agenceId) {
+        Vehicule vehicule = vehiculeRepository.findById(vehiculeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Véhicule introuvable", vehiculeId));
+        Agence agence = agenceRepository.findById(agenceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence introuvable", agenceId));
+        vehicule.setAgence(agence);
+        vehiculeRepository.save(vehicule);
+    }
+    @Override
+    @Transactional
+    public void desaffecterVehiculeDeAgence(Long vehiculeId) {
+        Vehicule vehicule = vehiculeRepository.findById(vehiculeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicule", vehiculeId));
+
+        if (vehicule.getAgence() == null) {
+            throw new IllegalStateException(
+                    "Le véhicule " + vehiculeId + " n'est rattaché à aucune agence");
+        }
+
+        vehicule.setAgence(null);
+        vehiculeRepository.save(vehicule);
+    }
+
+
+
 }

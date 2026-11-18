@@ -7,12 +7,17 @@ import tn.esprit.tpautoloc.domain.Employe;
 import tn.esprit.tpautoloc.exception.ResourceNotFoundException;
 import tn.esprit.tpautoloc.repository.IEmployeRepository;
 import tn.esprit.tpautoloc.service.IEmployeService;
+import org.springframework.transaction.annotation.Transactional;
+import tn.esprit.tpautoloc.domain.Agence;
+import tn.esprit.tpautoloc.repository.IAgenceRepository;
+
 
 @Service
 @RequiredArgsConstructor
 public class EmployeServiceImpl implements IEmployeService {
 
     private final IEmployeRepository employeRepository;
+    private final IAgenceRepository agenceRepository;
 
     @Override
     public Employe create(Employe employe) {
@@ -64,5 +69,37 @@ public class EmployeServiceImpl implements IEmployeService {
         if (employe.getRole() == null) {
             throw new IllegalArgumentException("Le rôle de l'employé est obligatoire");
         }
+    }
+    @Override
+    @Transactional
+    public void affecterEmployeAAgence(Long employeId, Long agenceId) {
+        Employe employe = employeRepository.findById(employeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employe", employeId));
+        Agence agence = agenceRepository.findById(agenceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", agenceId));
+
+        if (employe.getAgence() != null
+                && employe.getAgence().getIdAgence().equals(agenceId)) {
+            throw new IllegalStateException(
+                    "L'employé " + employeId + " est déjà rattaché à l'agence " + agenceId);
+        }
+
+        employe.setAgence(agence);
+        employeRepository.save(employe);
+    }
+
+    @Override
+    @Transactional
+    public void desaffecterEmployeDeAgence(Long employeId) {
+        Employe employe = employeRepository.findById(employeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employe", employeId));
+
+        if (employe.getAgence() == null) {
+            throw new IllegalStateException(
+                    "L'employé " + employeId + " n'est rattaché à aucune agence");
+        }
+
+        employe.setAgence(null);
+        employeRepository.save(employe);
     }
 }

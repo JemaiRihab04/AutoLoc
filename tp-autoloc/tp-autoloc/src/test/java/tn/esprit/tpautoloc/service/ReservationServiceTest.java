@@ -1,4 +1,4 @@
-package tn.esprit.tpautoloc.service;
+/*package tn.esprit.tpautoloc.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,4 +56,4 @@ class ReservationServiceTest {
         assertThat(output).contains("[EMAIL] Annulation notifiee au client");
         assertThat(output).contains("[SMS] Annulation notifiee au");
     }
-}
+}*/

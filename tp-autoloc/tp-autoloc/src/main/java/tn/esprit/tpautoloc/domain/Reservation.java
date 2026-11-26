@@ -1,7 +1,6 @@
 package tn.esprit.tpautoloc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import tn.esprit.tpautoloc.domain.enums.*;
 import lombok.AllArgsConstructor;

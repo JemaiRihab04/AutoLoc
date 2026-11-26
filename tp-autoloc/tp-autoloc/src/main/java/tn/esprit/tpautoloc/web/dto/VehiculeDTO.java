@@ -1,3 +1,4 @@
+
 package tn.esprit.tpautoloc.web.dto;
 
 import lombok.AllArgsConstructor;
@@ -5,10 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import tn.esprit.tpautoloc.domain.enums.CategorieVehicule;
 import tn.esprit.tpautoloc.domain.enums.StatutVehicule;
 
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Getter
 @Setter
@@ -16,12 +20,26 @@ import tn.esprit.tpautoloc.domain.enums.StatutVehicule;
 @AllArgsConstructor
 @Builder
 public class VehiculeDTO {
+
     private Long id;
+
+    @NotBlank(message = "L'immatriculation est obligatoire")
     private String immatriculation;
+
+    @NotBlank(message = "La marque est obligatoire")
     private String marque;
+
+    @NotBlank(message = "Le modèle est obligatoire")
     private String modele;
-    private CategorieVehicule categorie;          // enum (ou String) selon ton entité
+
+    @NotNull(message = "La catégorie du véhicule est obligatoire")
+    private CategorieVehicule categorie;
+
+    @Positive(message = "Le tarif journalier doit être strictement positif")
     private double tarifJournalier;
-    private StatutVehicule statut;        // enum (ou String) selon ton entité
+
+    private StatutVehicule statut;
+
+    @NotNull(message = "L'identifiant de l'agence est obligatoire")
     private Long agenceId;
 }

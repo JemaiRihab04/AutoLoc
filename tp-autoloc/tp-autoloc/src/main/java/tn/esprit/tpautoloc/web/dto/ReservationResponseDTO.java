@@ -19,10 +19,10 @@ public class ReservationResponseDTO {
     private Long id;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private StatutReservation statut;     // enum de ton projet (import à adapter)
+    private StatutReservation statut;
     private Long clientId;
     private String clientNomComplet;
     private Long vehiculeId;
     private String vehiculeImmatriculation;
-    private Double tarifEstime;           // calculé plus tard, ignoré par le mapper
+    private Double tarifEstime;
 }
